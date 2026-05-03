@@ -1,0 +1,98 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+\title{PageRank para Grafos Dirigidos Generales}
+\subtitle{Proyecto Final - Analisis de Algoritmos}
+\author{Nombre del Estudiante}
+\institute{Yachay Tech University}
+\date{2026}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Motivacion}
+  \begin{itemize}
+    \item PageRank mide importancia en grafos dirigidos.
+    \item La primera version funcionaba sobre un grafo pequeno.
+    \item La version final procesa grafos generales desde archivos CSV.
+    \item La implementacion principal esta escrita en C++.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Definicion formal}
+  Para un grafo dirigido $G=(V,E)$:
+  \[
+    r(v)=\frac{1-d}{n}+d\sum_{u\in In(v)}\frac{r(u)}{out(u)}+d\frac{D}{n}
+  \]
+  \begin{itemize}
+    \item $d$: factor de amortiguamiento.
+    \item $D$: masa de nodos colgantes.
+    \item $r$: distribucion estacionaria.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Paradigma}
+  \begin{itemize}
+    \item Iteracion de potencias.
+    \item Modelo de caminante aleatorio.
+    \item Teleportacion para garantizar convergencia.
+    \item Criterio de parada con norma $L_1$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Implementacion C++}
+  \begin{itemize}
+    \item Entrada: lista de aristas \texttt{source,target}.
+    \item Mapeo de etiquetas de nodos a enteros.
+    \item Listas de predecesores para evitar matriz densa.
+    \item Salida: ranking, score, in-degree y out-degree.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Complejidad}
+  \begin{itemize}
+    \item Por iteracion: $O(n+m)$.
+    \item Total: $O(k(n+m))$.
+    \item Memoria: $O(n+m)$.
+    \item Peor caso controlado por \texttt{max\_iter}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Analisis empirico}
+  \begin{itemize}
+    \item Dataset manual para inspeccion.
+    \item Datasets sinteticos de 100 a 5000 nodos.
+    \item Se mide tiempo, iteraciones y error final.
+    \item Todos los datasets convergieron con $\varepsilon=10^{-10}$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Resultados}
+  \begin{itemize}
+    \item 100 nodos, 600 aristas: 22 iteraciones.
+    \item 1000 nodos, 6000 aristas: 24 iteraciones.
+    \item 5000 nodos, 30000 aristas: 24 iteraciones.
+    \item Con $d=0.50$: 16 iteraciones; con $d=0.95$: 27 iteraciones.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusiones}
+  \begin{itemize}
+    \item PageRank combina teoria de grafos y cadenas de Markov.
+    \item La implementacion final ya no depende de un grafo pequeno.
+    \item El analisis teorico coincide con la estructura del codigo.
+    \item El proyecto queda listo para extenderse con datasets reales.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Preguntas}
+  \centering
+  Gracias.
+\end{frame}
+
+\end{document}

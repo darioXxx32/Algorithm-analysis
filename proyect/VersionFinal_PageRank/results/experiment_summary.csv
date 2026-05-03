@@ -1,0 +1,6 @@
+dataset,nodes,edges,damping,tolerance,iterations,converged,final_l1_error,time_seconds
+web_example,20,30,0.85,1e-10,44,true,8.41366837312e-11,0.0000190
+synthetic_100,100,600,0.85,1e-10,22,true,8.48162590508e-11,0.0000354
+synthetic_500,500,3000,0.85,1e-10,23,true,5.85844227947e-11,0.0005682
+synthetic_1000,1000,6000,0.85,1e-10,24,true,5.68532015628e-11,0.0001678
+synthetic_5000,5000,30000,0.85,1e-10,24,true,5.58311111373e-11,0.0010295
