@@ -1,0 +1,562 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------- PACKAGES --------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{geometry}
+\geometry{top=2cm, bottom=2cm, left=2cm, right=2cm}
+\usepackage{setspace}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{ifthen}
+
+% -------------------- HYPERREF SETUP --------------------
+\hypersetup{
+    hidelinks,
+    colorlinks=true,
+    breaklinks=true,
+    urlcolor=blue,
+    citecolor=black,
+    linkcolor=black
+}
+
+\setstretch{1.15}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+
+% -------------------- LISTINGS STYLE --------------------
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    columns=fullflexible,
+    keepspaces=true,
+    showstringspaces=false,
+    xleftmargin=0.5cm,
+    xrightmargin=0.5cm
+}
+
+% -------------------- SAFE IMAGE COMMAND --------------------
+\newcommand{\safeincludegraphics}[2]{
+    \IfFileExists{#2}{
+        \includegraphics[#1]{#2}
+    }{
+        \fbox{
+            \begin{minipage}[c][3cm][c]{0.35\textwidth}
+                \centering
+                Missing image: \texttt{\detokenize{#2}}
+            \end{minipage}
+        }
+    }
+}
+
+\newcommand{\handwrittenfigure}[2]{
+    \begin{figure}[H]
+        \centering
+        \safeincludegraphics{width=0.92\textwidth}{#1}
+        \caption*{\small #2}
+    \end{figure}
+}
+
+\newcommand{\outputfigure}[2]{
+    \begin{figure}[H]
+        \centering
+        \safeincludegraphics{width=0.96\textwidth}{#1}
+        \caption*{\small #2}
+    \end{figure}
+}
+
+% -------------------- DOCUMENT --------------------
+\begin{document}
+
+% -------------------- HEADER --------------------
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \flushleft
+    \safeincludegraphics{width=0.35\textwidth}{logo1.png}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+    \flushright
+    \safeincludegraphics{width=0.35\textwidth}{logo2.png}
+\end{minipage}
+
+\vspace{0.8cm}
+
+\begin{center}
+    {\huge \textbf{Assignment 02}}\\[6pt]
+    {\Large Analysis of Algorithms}
+\end{center}
+
+\vspace{0.4cm}
+
+\begin{center}
+    \textbf{Dario Pomasqui}\\
+    \textit{School of Mathematical and Computational Sciences}\\
+    \textit{Yachay Tech University}\\
+    San Miguel de Urcuquí, Imbabura, Ecuador\\
+    \today\\[8pt]
+    \textbf{GitHub Repository:}\\
+    \href{https://github.com/darioXxx32/Algorithm-analysis/tree/main/assignment02}
+    {https://github.com/darioXxx32/Algorithm-analysis/tree/main/assignment02}
+\end{center}
+
+\vspace{0.4cm}
+
+% ============================================================
+% EXERCISE 1.1
+% ============================================================
+\section*{Exercise 1: Solving Recurrences}
+
+
+\subsection*{1.1. $T(n) = 3 T(n/2) + n, \quad T(1) = 0$, for $n = 2^k$}
+
+\textbf{Primary handwritten resolution:}
+\handwrittenfigure{imagenes/ejercicio1part1.jpeg}{Exercise 1.1 handwritten work: substitutions, pattern, and geometric sum.}
+\handwrittenfigure{imagenes/ejercicio1part2.jpeg}{Exercise 1.1 handwritten work: induction verification.}
+
+\textbf{Typed solution for contrast and verification.}
+
+\textbf{Part 1: Finding the Closed Form by Repeated Substitution.}
+
+Starting with
+\begin{equation*}
+T(n)=3T(n/2)+n,
+\end{equation*}
+we substitute the recursive term several times to see the pattern:
+\begin{align*}
+T(n) &= 3T(n/2) + n \\
+&= 3\left[3T(n/4)+\frac{n}{2}\right]+n \\
+&= 3^2T(n/4)+\frac{3}{2}n+n \\
+&= 3^2\left[3T(n/8)+\frac{n}{4}\right]+\frac{3}{2}n+n \\
+&= 3^3T(n/8)+\left(\frac{3}{2}\right)^2n+\frac{3}{2}n+n.
+\end{align*}
+
+After $k$ substitutions, the recurrence has the form
+\begin{equation*}
+T(n) = 3^kT(n/2^k) + n\sum_{i=0}^{k-1}\left(\frac{3}{2}\right)^i
+\end{equation*}
+
+Since $n$ is a power of two, $n=2^k$, so $k=\log_2 n$. At this point $n/2^k=1$, and the base case gives $T(1)=0$:
+\begin{align*}
+T(n) &= 3^k(0)+n\sum_{i=0}^{k-1}\left(\frac{3}{2}\right)^i \\
+&= n\left[\frac{(3/2)^k-1}{(3/2)-1}\right] \\
+&= n\left[\frac{(3/2)^k-1}{1/2}\right] \\
+&= 2n\left(\frac{3^k}{2^k}-1\right).
+\end{align*}
+Using $2^k=n$, this becomes
+\begin{equation*}
+T(n)=2n\left(\frac{3^k}{n}-1\right)=2(3^k-n).
+\end{equation*}
+Finally, since $k=\log_2 n$,
+\begin{equation*}
+T(n)=2(3^{\log_2 n}-n)
+\quad \text{or equivalently} \quad
+T(2^k)=2(3^k-2^k).
+\end{equation*}
+
+\textbf{Part 2: Verification by Mathematical Induction.}
+
+We prove that
+\begin{equation*}
+T(2^k)=2(3^k-2^k)
+\end{equation*}
+for all integers $k\ge 0$.
+\begin{itemize}
+    \item \textbf{Base Case ($k=0$):} Here $n=2^0=1$. The formula gives
+    \begin{equation*}
+    T(2^0)=2(3^0-2^0)=2(1-1)=0,
+    \end{equation*}
+    which matches the condition $T(1)=0$.
+
+    \item \textbf{Inductive Hypothesis:} Assume that for an arbitrary integer $k\ge 0$,
+    \begin{equation*}
+    T(2^k)=2(3^k-2^k).
+    \end{equation*}
+
+    \item \textbf{Inductive Step:} We prove the formula for $k+1$. Since
+    $\frac{2^{k+1}}{2}=2^k$, the recurrence gives
+    \begin{align*}
+    T(2^{k+1}) &= 3T(2^k) + 2^{k+1} \\
+    &= 3[2(3^k - 2^k)] + 2^{k+1} \\
+    &= 2\cdot 3\cdot 3^k - 3\cdot 2\cdot 2^k + 2^{k+1} \\
+    &= 2\cdot 3^{k+1} - 3\cdot 2^{k+1} + 2^{k+1} \\
+    &= 2\cdot 3^{k+1} - 2\cdot 2^{k+1} \\
+    &= 2(3^{k+1} - 2^{k+1}).
+    \end{align*}
+\end{itemize}
+Therefore the closed form is verified.
+
+% ============================================================
+% EXERCISE 1.2
+% ============================================================
+\subsection*{1.2. $T(n) = 3 T(n-1) + 4 T(n-2), \quad T(0) = 0, \quad T(1) = 5$}
+
+\textbf{Primary handwritten resolution:}
+\handwrittenfigure{imagenes/ejercicio2part1.jpeg}{Exercise 1.2 handwritten work: characteristic equation, constants, and base cases.}
+\handwrittenfigure{imagenes/ejercicio2part2.jpeg}{Exercise 1.2 handwritten work: inductive step.}
+
+\textbf{Typed solution for contrast and verification.}
+
+\textbf{Part 1: Finding the Closed Form.}
+
+This is a second-order linear homogeneous recurrence. Following the handwritten solution, assume a solution of the form $T(n)=r^n$. Then
+\begin{align*}
+r^n &= 3r^{n-1}+4r^{n-2}.
+\end{align*}
+Dividing by $r^{n-2}$ gives the characteristic equation
+\begin{equation*}
+r^2=3r+4
+\quad \Longrightarrow \quad
+r^2-3r-4=0.
+\end{equation*}
+Factoring,
+\begin{equation*}
+(r-4)(r+1)=0,
+\end{equation*}
+so the roots are $r_1=4$ and $r_2=-1$. Therefore,
+\begin{equation*}
+T(n)=c_1 4^n+c_2(-1)^n.
+\end{equation*}
+
+Now apply the initial conditions:
+\begin{align*}
+T(0) &= c_1+c_2=0
+\quad \Longrightarrow \quad
+c_2=-c_1, \\
+T(1) &= 4c_1-c_2=5.
+\end{align*}
+Substituting $c_2=-c_1$ into the second equation:
+\begin{align*}
+5 &= 4c_1-(-c_1) \\
+&=5c_1,
+\end{align*}
+so $c_1=1$ and $c_2=-1$. Thus the closed form is
+\begin{equation*}
+T(n) = 4^n - (-1)^n
+\end{equation*}
+
+\textbf{Part 2: Verification by Strong Mathematical Induction.}
+
+We prove that
+\begin{equation*}
+T(n)=4^n-(-1)^n
+\end{equation*}
+for all integers $n\ge 0$. Strong induction is used because the recurrence depends on the two previous values.
+\begin{itemize}
+    \item \textbf{Base Cases:}
+    \begin{align*}
+    T(0)&=4^0-(-1)^0=1-1=0, \\
+    T(1)&=4^1-(-1)^1=4+1=5.
+    \end{align*}
+    These match the given initial conditions.
+
+    \item \textbf{Inductive Hypothesis:} Assume the formula is true for all integers $k$ with $0\le k\le m$, where $m\ge 1$. In particular,
+    \begin{equation*}
+    T(m)=4^m-(-1)^m
+    \quad \text{and} \quad
+    T(m-1)=4^{m-1}-(-1)^{m-1}.
+    \end{equation*}
+
+    \item \textbf{Inductive Step:} We prove the formula for $m+1$:
+    \begin{align*}
+    T(m+1) &= 3T(m)+4T(m-1) \\
+    &= 3[4^m-(-1)^m]+4[4^{m-1}-(-1)^{m-1}] \\
+    &= 3\cdot 4^m-3(-1)^m+4^m-4(-1)^{m-1}.
+    \end{align*}
+    Since $(-1)^{m-1}=-(-1)^m$, the last term becomes $+4(-1)^m$. Hence
+    \begin{align*}
+    T(m+1)
+    &=3\cdot 4^m+4^m-3(-1)^m+4(-1)^m \\
+    &=4\cdot 4^m+(-1)^m \\
+    &=4^{m+1}-(-1)^{m+1}.
+    \end{align*}
+\end{itemize}
+Therefore the formula is verified.
+
+% ============================================================
+% EXERCISE 1.3
+% ============================================================
+\subsection*{1.3. $T(n) = 5 T(n-1) - 6 T(n-2), \quad T(0) = 0, \quad T(1) = 1$}
+
+\textbf{Primary handwritten resolution:}
+\handwrittenfigure{imagenes/ejercicio3.jpeg}{Exercise 1.3 handwritten work: characteristic equation, constants, and induction.}
+
+\textbf{Typed solution for contrast and verification.}
+
+\textbf{Part 1: Finding the Closed Form.}
+
+Assume $T(n)=r^n$. Substituting into the recurrence gives
+\begin{align*}
+r^n &= 5r^{n-1}-6r^{n-2}.
+\end{align*}
+Dividing by $r^{n-2}$,
+\begin{equation*}
+r^2=5r-6
+\quad \Longrightarrow \quad
+r^2-5r+6=0.
+\end{equation*}
+Factoring the characteristic equation,
+\begin{equation*}
+(r-3)(r-2)=0,
+\end{equation*}
+so $r_1=3$ and $r_2=2$. Therefore,
+\begin{equation*}
+T(n)=c_1 3^n+c_2 2^n.
+\end{equation*}
+
+Now use the initial conditions:
+\begin{align*}
+T(0)&=c_1+c_2=0
+\quad \Longrightarrow \quad
+c_2=-c_1, \\
+T(1)&=3c_1+2c_2=1.
+\end{align*}
+Substitute $c_2=-c_1$:
+\begin{align*}
+1 &= 3c_1+2(-c_1) \\
+&= c_1.
+\end{align*}
+Thus $c_1=1$ and $c_2=-1$, so the closed form is
+\begin{equation*}
+T(n) = 3^n - 2^n
+\end{equation*}
+
+\textbf{Part 2: Verification by Strong Mathematical Induction.}
+
+We prove that
+\begin{equation*}
+T(n)=3^n-2^n
+\end{equation*}
+for all integers $n\ge 0$.
+\begin{itemize}
+    \item \textbf{Base Cases:}
+    \begin{align*}
+    T(0)&=3^0-2^0=1-1=0, \\
+    T(1)&=3^1-2^1=3-2=1.
+    \end{align*}
+    These match the given initial conditions.
+
+    \item \textbf{Inductive Hypothesis:} Assume the closed form is true for all integers $k$ such that $0\le k\le m$, where $m\ge 1$. In particular,
+    \begin{equation*}
+    T(m)=3^m-2^m
+    \quad \text{and} \quad
+    T(m-1)=3^{m-1}-2^{m-1}.
+    \end{equation*}
+
+    \item \textbf{Inductive Step:} We prove the formula for $m+1$:
+    \begin{align*}
+    T(m+1) &= 5T(m)-6T(m-1) \\
+    &= 5[3^m-2^m]-6[3^{m-1}-2^{m-1}] \\
+    &= 5\cdot 3^m-5\cdot 2^m-6\cdot 3^{m-1}+6\cdot 2^{m-1}.
+    \end{align*}
+    Rewrite the last two terms using the same bases:
+    \begin{align*}
+    6\cdot 3^{m-1}&=2\cdot 3^m, \\
+    6\cdot 2^{m-1}&=3\cdot 2^m.
+    \end{align*}
+    Therefore,
+    \begin{align*}
+    T(m+1)
+    &=5\cdot 3^m-5\cdot 2^m-2\cdot 3^m+3\cdot 2^m \\
+    &=(5-2)3^m-(5-3)2^m \\
+    &=3\cdot 3^m-2\cdot 2^m \\
+    &=3^{m+1}-2^{m+1}.
+    \end{align*}
+\end{itemize}
+Therefore the formula is verified.
+
+% ============================================================
+% EXERCISE 1.4
+% ============================================================
+\subsection*{1.4. $x(n) = 2 x(n-1) + 4 x(n-2), \quad x(0) = 1, \quad x(1) = 2$}
+
+\textbf{Primary handwritten resolution:}
+\handwrittenfigure{imagenes/ejercicio4part1.jpeg}{Exercise 1.4 handwritten work: characteristic roots, constants, and base cases.}
+\handwrittenfigure{imagenes/ejercicio4part2.jpeg}{Exercise 1.4 handwritten work: inductive step.}
+
+\textbf{Typed solution for contrast and verification.}
+
+\textbf{Part 1: Finding the Closed Form.}
+
+Assume $x(n)=r^n$. Substituting into the recurrence,
+\begin{align*}
+r^n &= 2r^{n-1}+4r^{n-2}.
+\end{align*}
+Dividing by $r^{n-2}$ gives
+\begin{equation*}
+r^2=2r+4
+\quad \Longrightarrow \quad
+r^2-2r-4=0.
+\end{equation*}
+Using the quadratic formula,
+\begin{equation*}
+r=\frac{2\pm\sqrt{(-2)^2-4(1)(-4)}}{2}
+=\frac{2\pm\sqrt{20}}{2}
+=1\pm\sqrt{5}.
+\end{equation*}
+Thus the general solution is
+\begin{equation*}
+x(n)=c_1(1+\sqrt{5})^n+c_2(1-\sqrt{5})^n.
+\end{equation*}
+
+Now apply the initial conditions. For $n=0$,
+\begin{equation*}
+x(0)=c_1+c_2=1
+\quad \Longrightarrow \quad
+c_2=1-c_1.
+\end{equation*}
+For $n=1$,
+\begin{align*}
+x(1) &= c_1(1+\sqrt{5})+c_2(1-\sqrt{5})=2.
+\end{align*}
+Substituting $c_2=1-c_1$,
+\begin{align*}
+2 &= c_1(1+\sqrt{5})+(1-c_1)(1-\sqrt{5}) \\
+&= c_1+c_1\sqrt{5}+1-\sqrt{5}-c_1+c_1\sqrt{5} \\
+&=1-\sqrt{5}+2c_1\sqrt{5}.
+\end{align*}
+Therefore,
+\begin{equation*}
+2c_1\sqrt{5}=1+\sqrt{5}
+\quad \Longrightarrow \quad
+c_1=\frac{1+\sqrt{5}}{2\sqrt{5}}.
+\end{equation*}
+Then
+\begin{equation*}
+c_2=1-c_1
+=1-\frac{1+\sqrt{5}}{2\sqrt{5}}
+=\frac{\sqrt{5}-1}{2\sqrt{5}}.
+\end{equation*}
+So
+\begin{equation*}
+x(n)=\frac{1+\sqrt{5}}{2\sqrt{5}}(1+\sqrt{5})^n
++\frac{\sqrt{5}-1}{2\sqrt{5}}(1-\sqrt{5})^n.
+\end{equation*}
+Since $\sqrt{5}-1=-(1-\sqrt{5})$, this can be written as the simplified closed form
+\begin{equation*}
+x(n) = \frac{1}{2\sqrt{5}} \left[ (1 + \sqrt{5})^{n+1} - (1 - \sqrt{5})^{n+1} \right]
+\end{equation*}
+
+\textbf{Part 2: Verification by Strong Mathematical Induction.}
+
+We prove that
+\begin{equation*}
+x(n)=\frac{1}{2\sqrt{5}}\left[(1+\sqrt{5})^{n+1}-(1-\sqrt{5})^{n+1}\right]
+\end{equation*}
+for all integers $n\ge 0$.
+\begin{itemize}
+    \item \textbf{Base Cases:}
+    \begin{align*}
+    x(0)&=\frac{1}{2\sqrt{5}}\left[(1+\sqrt{5})-(1-\sqrt{5})\right]
+    =\frac{2\sqrt{5}}{2\sqrt{5}}=1, \\
+    x(1)&=\frac{1}{2\sqrt{5}}\left[(1+\sqrt{5})^2-(1-\sqrt{5})^2\right] \\
+    &=\frac{1}{2\sqrt{5}}\left[(6+2\sqrt{5})-(6-2\sqrt{5})\right]
+    =\frac{4\sqrt{5}}{2\sqrt{5}}=2.
+    \end{align*}
+    These match $x(0)=1$ and $x(1)=2$.
+
+    \item \textbf{Inductive Hypothesis:} Assume the formula is true for all integers $k$ such that $0\le k\le m$, where $m\ge 1$. In particular,
+    \begin{align*}
+    x(m)&=\frac{1}{2\sqrt{5}}\left[(1+\sqrt{5})^{m+1}-(1-\sqrt{5})^{m+1}\right], \\
+    x(m-1)&=\frac{1}{2\sqrt{5}}\left[(1+\sqrt{5})^{m}-(1-\sqrt{5})^{m}\right].
+    \end{align*}
+
+    \item \textbf{Inductive Step:} We prove the formula for $m+1$. Using the original recurrence,
+    \begin{align*}
+    x(m+1) &= 2x(m) + 4x(m-1) \\
+    &= \frac{2}{2\sqrt{5}}\left[(1+\sqrt{5})^{m+1}-(1-\sqrt{5})^{m+1}\right] \\
+    &\quad +\frac{4}{2\sqrt{5}}\left[(1+\sqrt{5})^m-(1-\sqrt{5})^m\right] \\
+    &= \frac{1}{2\sqrt{5}}\left[
+    2(1+\sqrt{5})^{m+1}+4(1+\sqrt{5})^m \right. \\
+    &\quad \left. -2(1-\sqrt{5})^{m+1}-4(1-\sqrt{5})^m
+    \right] \\
+    &= \frac{1}{2\sqrt{5}}\left[
+    (1+\sqrt{5})^m(2(1+\sqrt{5})+4) \right. \\
+    &\quad \left. -(1-\sqrt{5})^m(2(1-\sqrt{5})+4)
+    \right].
+    \end{align*}
+    Notice that
+    \begin{equation*}
+    2(1\pm\sqrt{5})+4=6\pm 2\sqrt{5}=(1\pm\sqrt{5})^2.
+    \end{equation*}
+    Substituting this into the previous expression,
+    \begin{equation*}
+    x(m+1)=\frac{1}{2\sqrt{5}}\left[(1+\sqrt{5})^{m+2}-(1-\sqrt{5})^{m+2}\right],
+    \end{equation*}
+    which is exactly the required formula for $n=m+1$.
+\end{itemize}
+Therefore the formula is verified.
+
+% ============================================================
+% EXERCISE 2
+% ============================================================
+\section*{Exercise 2: Fibonacci Sequence Programs}
+
+The Fibonacci sequence is generated using the following recurrence: $T(n) = T(n-2) + T(n-1)$.
+
+\subsection*{2.1. Generating the sequence using iteration}
+
+\textbf{Source file: \texttt{fibonacci\_iterative.cpp}}
+
+Only the most important fragment of the iterative program is shown below:
+
+\begin{lstlisting}[language=C++]
+int prev2 = 0;
+int prev1 = 1;
+int current;
+
+for (int i = 3; i <= n; i++) {
+    current = prev1 + prev2;
+    cout << current << " ";
+    prev2 = prev1;
+    prev1 = current;
+}
+\end{lstlisting}
+
+In this fragment, \texttt{prev2} and \texttt{prev1} store the two previous Fibonacci values. At each iteration, the next term is obtained by adding them. Then the variables are updated so the program can continue generating the sequence without calling the function again.
+
+\textbf{Execution output:}
+\outputfigure{imagenes/fibonacci_iterative_output.png}{Captured output after compiling and running \texttt{fibonacci\_iterative.cpp}.}
+
+\subsection*{2.2. Generating the sequence using recursion}
+
+\textbf{Source file: \texttt{fibonacci\_recursive.cpp}}
+
+Only the recursive rule and the sequence generation loop are shown:
+
+\begin{lstlisting}[language=C++]
+if (n == 0) {
+    return 0;
+}
+if (n == 1) {
+    return 1;
+}
+
+return fibonacciRecursive(n - 1) + fibonacciRecursive(n - 2);
+\end{lstlisting}
+
+This fragment represents the recurrence relation directly. The cases \texttt{n == 0} and \texttt{n == 1} stop the recursion, while the last line computes each term using the two previous terms.
+
+\begin{lstlisting}[language=C++]
+for (int i = 0; i < terms; i++) {
+    cout << fibonacciRecursive(i) << " ";
+}
+\end{lstlisting}
+
+This loop calls the recursive function for each position of the sequence and prints the corresponding Fibonacci value.
+
+\textbf{Execution output:}
+\outputfigure{imagenes/fibonacci_recursive_output.png}{Captured output after compiling and running \texttt{fibonacci\_recursive.cpp}.}
+
+\end{document}
