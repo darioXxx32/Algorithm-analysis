@@ -1,0 +1,13 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Forward elimination for Gaussian elimination}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Goal and mathematical operation}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Pivoting and implementation}{2}{subsection.1.2}%
+\contentsline {section}{\numberline {2}Backward substitution and its running time}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Algorithm}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Proof of the quadratic running time}{4}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Transforming an array into a max-heap}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Heap property and representation}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Bottom-up construction}{6}{subsection.3.2}%
+\contentsline {section}{\numberline {4}Solving a system using LU decomposition}{7}{section.4}%
+\contentsline {subsection}{\numberline {4.1}From elimination to factorization}{7}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Row swaps and algorithm details}{7}{subsection.4.2}%
