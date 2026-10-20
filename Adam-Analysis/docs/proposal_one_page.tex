@@ -1,0 +1,20 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{amsmath}
+\setlength{\parskip}{3pt}\setlength{\parindent}{0pt}
+\begin{document}
+\begin{center}
+{\Large\bfseries Project Proposal: Analysis of Adam in C++}\\
+ECMC1018: Analysis of Algorithms\\
+Dario Pomasqui — School of Mathematical and Computational Sciences, Yachay Tech University
+\end{center}
+\textbf{Motivation.} Adam (Adaptive Moment Estimation) is a first-order optimizer that combines a moving average of gradients with adaptive coordinate-wise scaling from squared gradients. It is widely used, while convergence research identifies settings where standard Adam can fail. This project studies its update rule and behavior through controlled experiments implemented in C++ as required by the course.
+
+\textbf{Research question.} How does Adam minimize representative test functions, and how do convergence behavior and update cost compare with SGD with momentum and AMSGrad under declared configurations?
+
+\textbf{Method.} Implement vector-valued optimizers in C++17 using a shared objective and logging interface. Validate gradients and first updates on $f(\mathbf{x})=\sum_i x_i^2$, then evaluate the curved Rosenbrock valley and multimodal Rastrigin function. Reproduce the periodic-gradient example studied by Reddi et al. to examine Adam and AMSGrad. Record objective value, gradient norm, distance to known minima, iterations, parameter trajectories, and indicative runtime in CSV. Use identical starts, iteration limits, and stopping criteria within each comparison; disclose each method's hyperparameters. The analysis separates $O(d)$ optimizer update time and auxiliary state from objective gradient cost. Findings will be interpreted as outcomes for these configurations, not universal optimizer rankings.
+
+\textbf{Expected deliverables.} A reproducible C++ implementation, validation checks, CSV data and plots, an IEEE Conference report of 12–15 pages, and a recorded 10-minute oral presentation, following the official Presentation I instructions. The report will include real Overleaf, GitHub, and video links when available.
+
+\textbf{Initial references.} D. P. Kingma and J. Ba, “Adam: A Method for Stochastic Optimization,” ICLR, 2015, arXiv:1412.6980. S. J. Reddi, S. Kale, and S. Kumar, “On the Convergence of Adam and Beyond,” ICLR, 2018.
+\end{document}

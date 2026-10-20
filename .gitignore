@@ -1,0 +1,18 @@
+# VS Code: conservar configuraciones compartidas solo si son intencionales
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Build y archivos temporales
+build/
+dist/
+*.log
+
+# Sistema operativo
+Thumbs.db
+.DS_Store
