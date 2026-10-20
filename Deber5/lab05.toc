@@ -1,0 +1,26 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Insertion Sort on Alphabetic Characters}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Problem Statement}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Mathematical Analysis of Expected Comparisons}{2}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Algorithm Adjustments for Characters}{2}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Key Implementation Details}{2}{subsection.1.4}%
+\contentsline {subsection}{\numberline {1.5}Execution Output}{3}{subsection.1.5}%
+\contentsline {section}{\numberline {2}Binary Search vs.\ Interpolation Search}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Problem Statement}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Mathematical Models of Search Space Reduction}{4}{subsection.2.2}%
+\contentsline {paragraph}{Binary Search.}{4}{paragraph*.2}%
+\contentsline {paragraph}{Interpolation Search.}{4}{paragraph*.3}%
+\contentsline {subsection}{\numberline {2.3}Key Implementation Details}{4}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Execution Output}{5}{subsection.2.4}%
+\contentsline {section}{\numberline {3}Topological Sort Has a Solution If and Only If the Graph Is a DAG}{6}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Problem Statement}{6}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Formal Mathematical Proof}{6}{subsection.3.2}%
+\contentsline {paragraph}{($\Rightarrow $)\enspace If $G$ has a topological ordering, then $G$ is a DAG.}{6}{paragraph*.5}%
+\contentsline {paragraph}{($\Leftarrow $)\enspace If $G$ is a DAG, then $G$ has a topological ordering.}{6}{paragraph*.6}%
+\contentsline {paragraph}{Conclusion}{7}{paragraph*.7}%
+\contentsline {subsection}{\numberline {3.3}Algorithmic Proof: Kahn's Algorithm}{7}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Execution Output}{8}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Maximum Distinct Topological Orderings for a DAG with $n$ Vertices}{9}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Problem Statement}{9}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Answer and Mathematical Proof}{9}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Algorithmic Verification: DFS Backtracking}{9}{subsection.4.3}%

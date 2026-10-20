@@ -1,0 +1,545 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------- PACKAGES --------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{geometry}
+\geometry{top=2cm, bottom=2cm, left=2cm, right=2cm}
+\usepackage{setspace}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{ifthen}
+
+% -------------------- HYPERREF SETUP --------------------
+\hypersetup{
+    hidelinks,
+    colorlinks=true,
+    breaklinks=true,
+    urlcolor=blue,
+    citecolor=black,
+    linkcolor=black
+}
+
+\setstretch{1.15}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+
+% -------------------- LISTINGS STYLE --------------------
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    columns=fullflexible,
+    keepspaces=true,
+    showstringspaces=false,
+    xleftmargin=0.5cm,
+    xrightmargin=0.5cm
+}
+
+% -------------------- SAFE IMAGE COMMAND --------------------
+\newcommand{\safeincludegraphics}[2]{
+    \IfFileExists{#2}{
+        \includegraphics[#1]{#2}
+    }{
+        \fbox{
+            \begin{minipage}[c][3cm][c]{0.35\textwidth}
+                \centering
+                Missing image: \texttt{\detokenize{#2}}
+            \end{minipage}
+        }
+    }
+}
+
+\newcommand{\optionallogo}[2]{
+    \IfFileExists{#2}{
+        \includegraphics[#1]{#2}
+    }{}
+}
+
+% -------------------- DOCUMENT --------------------
+\begin{document}
+
+% -------------------- HEADER --------------------
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \flushleft
+    \optionallogo{width=0.35\textwidth}{logo1.png}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+    \flushright
+    \optionallogo{width=0.35\textwidth}{logo2.png}
+\end{minipage}
+
+\vspace{0.8cm}
+
+\begin{center}
+    {\huge \textbf{Assignment 01}}\\[6pt]
+    {\Large Analysis of Algorithms}
+\end{center}
+
+\vspace{0.4cm}
+
+\begin{center}
+    \textbf{Dario Pomasqui}\\
+    \textit{School of Mathematical and Computational Sciences}\\
+    \textit{Yachay Tech University}\\
+    San Miguel de Urcuqui, Imbabura, Ecuador\\
+    \today\\[8pt]
+    \textbf{GitHub Repository:}\\
+    \href{https://github.com/darioXxx32/Algorithm-analysis/tree/main/assignment01}
+    {https://github.com/darioXxx32/Algorithm-analysis/tree/main/assignment01}
+\end{center}
+
+\vspace{0.4cm}
+
+\noindent The complete source files are available in the repository. This report focuses on the core idea of each activity, so only the most relevant code fragments are shown together with the execution evidence.
+
+% ============================================================
+% EXERCISE 1
+% ============================================================
+\section{Exercise 1: Euclid's Algorithm}
+
+Euclid's algorithm computes $\gcd(m,n)$ by repeatedly replacing the pair $(m,n)$ with $(n, m \bmod n)$. When the second value becomes zero, the first value is the greatest common divisor.
+
+\subsection*{Analysis and Key Points}
+
+The important idea in this exercise is that the GCD does not change when the pair $(m,n)$ is replaced by $(n, m \bmod n)$. Because of that, the code only needs a small loop that keeps moving the remainder forward. The key moment is when the remainder becomes zero; at that point, the last nonzero value is the answer.
+
+\subsection*{Textbook Pseudocode}
+
+\begin{lstlisting}
+ALGORITHM Euclid(m, n)
+while n != 0 do
+    r <- m mod n
+    m <- n
+    n <- r
+return m
+\end{lstlisting}
+
+\subsection*{Key Code Fragment}
+
+\begin{lstlisting}[language=C]
+int euclid(int m, int n) {
+    while (n != 0) {
+        int r = m % n;
+        m = n;
+        n = r;
+    }
+    return m;
+}
+\end{lstlisting}
+
+The fragment keeps only the essential loop: compute the remainder, shift the two values, and stop when no remainder remains.
+
+\subsection*{Handwritten Work}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics{width=0.85\textwidth}{imagenes/pregunta1.jpeg}
+    \caption{Handwritten work for Euclid's Algorithm.}
+    \label{fig:exercise1-handwritten}
+\end{figure}
+
+\subsection*{Execution Output}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics{width=0.8\textwidth}{imagenes/salida1.png}
+    \caption{Execution output of Euclid's Algorithm.}
+    \label{fig:exercise1-output}
+\end{figure}
+
+% ============================================================
+% EXERCISE 2
+% ============================================================
+\section{Exercise 2: Consecutive Integer Checking Algorithm}
+
+This algorithm starts from $t=\min\{m,n\}$ and decreases $t$ until it finds a number that divides both inputs. Because it checks candidates from largest to smallest, the first valid divisor is the GCD.
+
+\subsection*{Analysis and Key Points}
+
+The key point is that the GCD cannot be larger than the smaller of the two inputs. This method uses that idea directly by testing possible divisors from largest to smallest. It is not as efficient as Euclid's algorithm, but it is very clear: the first value that divides both numbers must be the greatest common divisor.
+
+\subsection*{Textbook-Based Pseudocode}
+
+\begin{lstlisting}
+ALGORITHM ConsecutiveIntegerChecking(m, n)
+t <- min{m, n}
+while t > 0 do
+    if m mod t = 0 and n mod t = 0 then
+        return t
+    t <- t - 1
+\end{lstlisting}
+
+\subsection*{Key Code Fragment}
+
+\begin{lstlisting}[language=C]
+int consecutiveIntegerChecking(int m, int n) {
+    int t = min(m, n);
+
+    while (t > 0) {
+        if (m % t == 0 && n % t == 0) {
+            return t;
+        }
+        t--;
+    }
+    return 1;
+}
+\end{lstlisting}
+
+The important part is the descending search. The test \texttt{m \% t == 0 \&\& n \% t == 0} confirms that the current candidate divides both numbers.
+
+\subsection*{Handwritten Work}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics{width=0.85\textwidth}{imagenes/pregunta2.jpeg}
+    \caption{Handwritten work for the Consecutive Integer Checking Algorithm.}
+    \label{fig:exercise2-handwritten}
+\end{figure}
+
+\subsection*{Execution Output}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics{width=0.8\textwidth}{imagenes/salida2.png}
+    \caption{Execution output of the Consecutive Integer Checking Algorithm.}
+    \label{fig:exercise2-output}
+\end{figure}
+
+% ============================================================
+% EXERCISE 3
+% ============================================================
+\section{Exercise 3: Middle-School Procedure and Sieve of Eratosthenes}
+
+The middle-school procedure computes the GCD by factoring both numbers into primes, selecting the common prime factors, and multiplying them. The Sieve of Eratosthenes is used first to generate the prime numbers needed for factorization.
+
+\subsection*{Analysis and Key Points}
+
+This exercise has more parts than the first two because it combines prime generation, factorization, and comparison. The sieve is useful because it gives the prime numbers needed to factor both inputs. Once both factor lists are ready, the common prime factors can be selected and multiplied, which follows the same logic usually done by hand in the middle-school method.
+
+\subsection*{Core Sieve Fragment}
+
+\begin{lstlisting}[language=C]
+for (int p = 2; p * p <= n; p++) {
+    if (is_prime[p]) {
+        for (int j = p * p; j <= n; j += p) {
+            is_prime[j] = 0;
+        }
+    }
+}
+\end{lstlisting}
+
+This loop marks composite numbers as non-prime. Starting at \texttt{p * p} avoids repeating eliminations that were already handled by smaller primes.
+
+\subsection*{Core GCD Fragment}
+
+\begin{lstlisting}[language=C]
+while (i < countM && j < countN) {
+    if (factorsM[i] == factorsN[j]) {
+        common[countC++] = factorsM[i];
+        i++;
+        j++;
+    } else if (factorsM[i] < factorsN[j]) {
+        i++;
+    } else {
+        j++;
+    }
+}
+
+int gcd = 1;
+for (int k = 0; k < countC; k++) {
+    gcd *= common[k];
+}
+\end{lstlisting}
+
+After both numbers are factorized, the two sorted factor lists are compared with two indices. Equal values are common prime factors, and their product gives the final GCD.
+
+\subsection*{Handwritten Work}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \safeincludegraphics{width=\textwidth}{imagenes/pregunta3part1.jpeg}
+        \caption{Part 1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \safeincludegraphics{width=\textwidth}{imagenes/pregunta3part2.jpeg}
+        \caption{Part 2}
+    \end{subfigure}
+    \caption{Handwritten work for the middle-school procedure and sieve.}
+    \label{fig:exercise3-handwritten}
+\end{figure}
+
+\subsection*{Execution Output}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics{width=0.8\textwidth}{imagenes/salida3.png}
+    \caption{Execution output of the middle-school GCD implementation.}
+    \label{fig:exercise3-output}
+\end{figure}
+
+% ============================================================
+% EXERCISE 4
+% ============================================================
+\section{Exercise 4: Stack Behavior Using C++ Lists}
+
+A stack follows Last-In, First-Out (LIFO) behavior. With \texttt{std::list}, this can be simulated by inserting, reading, and removing elements from the same end of the list.
+
+\subsection*{Analysis and Key Points}
+
+The important detail is that a normal list becomes a stack only if its operations are restricted. In this case, everything happens at the back of the list: new elements are inserted there, read there, and removed from there. The output makes the LIFO idea visible because the last value inserted is the first one printed and removed.
+
+\subsection*{Key Code Fragment}
+
+\begin{lstlisting}[language=C++]
+stack_list.push_back(10);
+stack_list.push_back(20);
+stack_list.push_back(30);
+
+while (!stack_list.empty()) {
+    cout << "Top element: " << stack_list.back() << endl;
+    stack_list.pop_back();
+}
+\end{lstlisting}
+
+\texttt{push\_back()} adds new elements to the top of the simulated stack, \texttt{back()} reads the newest element, and \texttt{pop\_back()} removes it.
+
+\subsection*{Execution Output}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics{width=0.8\textwidth}{imagenes/salida4.png}
+    \caption{Execution output demonstrating stack behavior with a C++ list.}
+    \label{fig:exercise4-output}
+\end{figure}
+
+% ============================================================
+% EXERCISE 5
+% ============================================================
+\section{Exercise 5: Custom MyStack Class}
+
+The \texttt{MyStack} class encapsulates a \texttt{std::list} so users can only interact with it through stack operations. This protects the LIFO behavior from arbitrary list modifications.
+
+\subsection*{Analysis and Key Points}
+
+This class takes the idea from the previous exercise and makes it safer. The list is private, so the user cannot insert or delete elements in the middle and accidentally break the stack behavior. The public methods become the controlled interface of the stack, and the empty checks are important because they avoid invalid operations such as reading the top of an empty structure.
+
+\subsection*{Key Code Fragment}
+
+\begin{lstlisting}[language=C++]
+template <typename T>
+class MyStack {
+private:
+    list<T> elements;
+
+public:
+    void push(const T& value) { elements.push_back(value); }
+
+    void pop() {
+        if (isEmpty()) throw out_of_range("Stack is empty");
+        elements.pop_back();
+    }
+
+    T top() const {
+        if (isEmpty()) throw out_of_range("Stack is empty");
+        return elements.back();
+    }
+};
+\end{lstlisting}
+
+The private list stores the data, while \texttt{push()}, \texttt{pop()}, and \texttt{top()} expose only the operations that a stack should allow.
+
+\subsection*{Execution Output}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics{width=0.8\textwidth}{imagenes/salida5.png}
+    \caption{Execution output of the custom MyStack class.}
+    \label{fig:exercise5-output}
+\end{figure}
+
+% ============================================================
+% EXERCISE 6
+% ============================================================
+\section{Exercise 6: Queue Behavior Using C++ Lists}
+
+A queue follows First-In, First-Out (FIFO) behavior. With \texttt{std::list}, new elements are inserted at the back and removed from the front.
+
+\subsection*{Analysis and Key Points}
+
+For a queue, the essential difference is that insertion and removal happen at opposite ends. New elements enter at the back, while the oldest element leaves from the front. This matches the FIFO idea, and the output confirms it because the first inserted value is also the first one removed.
+
+\subsection*{Key Code Fragment}
+
+\begin{lstlisting}[language=C++]
+queue_list.push_back(10);
+queue_list.push_back(20);
+queue_list.push_back(30);
+
+while (!queue_list.empty()) {
+    cout << "Front element: " << queue_list.front() << endl;
+    queue_list.pop_front();
+}
+\end{lstlisting}
+
+\texttt{push\_back()} performs the enqueue operation, while \texttt{front()} and \texttt{pop\_front()} read and remove the oldest inserted element.
+
+\subsection*{Execution Output}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics{width=0.8\textwidth}{imagenes/salida6.png}
+    \caption{Execution output demonstrating queue behavior with a C++ list.}
+    \label{fig:exercise6-output}
+\end{figure}
+
+% ============================================================
+% EXERCISE 7
+% ============================================================
+\section{Exercise 7: Custom MyQueue Class}
+
+The \texttt{MyQueue} class encapsulates queue behavior with a private \texttt{std::list}. The public methods enforce FIFO order and include basic exception handling for invalid operations on an empty queue.
+
+\subsection*{Analysis and Key Points}
+
+The main idea is similar to the custom stack, but the direction of removal changes. The private list protects the internal structure, while the public methods force the queue to behave correctly. \texttt{push()} adds at the back, and \texttt{front()} plus \texttt{pop()} work at the front, which keeps the FIFO order consistent.
+
+\subsection*{Key Code Fragment}
+
+\begin{lstlisting}[language=C++]
+template <typename T>
+class MyQueue {
+private:
+    list<T> elements;
+
+public:
+    void push(const T& value) { elements.push_back(value); }
+
+    void pop() {
+        if (isEmpty()) throw out_of_range("Queue is empty");
+        elements.pop_front();
+    }
+
+    T front() const {
+        if (isEmpty()) throw out_of_range("Queue is empty");
+        return elements.front();
+    }
+};
+\end{lstlisting}
+
+The queue receives new elements at the back, but returns and removes elements from the front. This is the essential difference from the stack implementation in Exercise~5.
+
+\subsection*{Execution Output}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics{width=0.8\textwidth}{imagenes/salida7.png}
+    \caption{Execution output of the custom MyQueue class.}
+    \label{fig:exercise7-output}
+\end{figure}
+
+% ============================================================
+% EXERCISE 8
+% ============================================================
+\section{Exercise 8: C++ Standard Library Stacks and Queues}
+
+The C++ Standard Library already provides container adapters for stacks and queues. These adapters restrict the operations of an underlying container, usually \texttt{std::deque}, to match a specific data-structure behavior.
+
+\subsection*{Analysis and Key Points}
+
+This activity is useful because it shows that C++ already includes ready-made structures for these cases. \texttt{std::stack} and \texttt{std::queue} are container adapters, so they hide operations that would break LIFO or FIFO behavior. \texttt{std::priority\_queue} is different because it removes elements by priority, while \texttt{std::deque} is more flexible because it works efficiently at both ends.
+
+\subsection*{Key Code Fragments}
+
+\begin{lstlisting}[language=C++]
+stack<string> myStack;
+myStack.push("Primer plato");
+myStack.push("Segundo plato");
+cout << myStack.top() << endl;
+myStack.pop();
+\end{lstlisting}
+
+\begin{lstlisting}[language=C++]
+queue<string> myQueue;
+myQueue.push("Cliente 1");
+myQueue.push("Cliente 2");
+cout << myQueue.front() << endl;
+myQueue.pop();
+\end{lstlisting}
+
+\begin{lstlisting}[language=C++]
+priority_queue<int> pQueue;
+pQueue.push(10);
+pQueue.push(100);
+pQueue.push(50);
+cout << pQueue.top() << endl;  // highest priority
+\end{lstlisting}
+
+\texttt{std::stack} enforces LIFO order, \texttt{std::queue} enforces FIFO order, and \texttt{std::priority\_queue} removes elements by priority rather than by insertion order.
+
+\subsection*{Execution Output}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics{width=0.8\textwidth}{imagenes/salida8.png}
+    \caption{Execution output of the standard library stack, queue, priority queue, and deque examples.}
+    \label{fig:exercise8-output}
+\end{figure}
+
+% ============================================================
+% EXERCISE 9
+% ============================================================
+\section{Exercise 9: Custom Binary Tree Data Structure}
+
+The custom tree was implemented as a Binary Search Tree (BST). In a BST, values smaller than the current node go to the left subtree, while greater values go to the right subtree.
+
+\subsection*{Analysis and Key Points}
+
+The key decision was to make the structure a Binary Search Tree, since that gives a clear rule for every insertion. Smaller values move to the left and greater values move to the right. Recursion fits well here because each child node can be treated like another smaller tree, and the inorder traversal is a good check because a correct BST should print the values in sorted order.
+
+\subsection*{Key Code Fragment}
+
+\begin{lstlisting}[language=C++]
+Node* insertRecursive(Node* current, int value) {
+    if (current == nullptr) {
+        return new Node(value);
+    }
+
+    if (value < current->data) {
+        current->left = insertRecursive(current->left, value);
+    } else if (value > current->data) {
+        current->right = insertRecursive(current->right, value);
+    }
+
+    return current;
+}
+\end{lstlisting}
+
+The base case creates a new node when an empty position is found. Otherwise, the value comparison chooses the left or right branch recursively. The inorder traversal was used as validation because a correct BST prints its values in ascending order.
+
+\subsection*{Execution Output}
+
+\begin{figure}[H]
+    \centering
+    \safeincludegraphics{width=0.8\textwidth}{imagenes/salida9.png}
+    \caption{Execution output showing insertion and inorder traversal of the Binary Search Tree.}
+    \label{fig:exercise9-output}
+\end{figure}
+
+\end{document}

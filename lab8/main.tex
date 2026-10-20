@@ -1,0 +1,271 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[margin=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{listings}
+
+\hypersetup{
+    hidelinks,
+    colorlinks=true,
+    breaklinks=true,
+    urlcolor=blue,
+    citecolor=black,
+    linkcolor=black
+}
+
+\lstset{
+    language=C++,
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single
+}
+
+\begin{document}
+
+\begin{multicols}{2}
+\begin{flushleft}
+\includegraphics[width=0.36\textwidth]{logo1.png}
+\end{flushleft}
+\begin{flushright}
+\includegraphics[width=0.38\textwidth]{logo2.png}
+\end{flushright}
+\end{multicols}
+
+\begin{center}
+    {\huge Lab 8: Counting Sort and Closed Hashing}\\[4pt]
+    {\large Data Structures and Algorithms}
+\end{center}
+
+\begin{center}
+    \textbf{Dario Pomasqui}\\
+    \textit{School of Mathematical and Computational Sciences}\\
+    \textit{Yachay Tech University}\\
+    San Miguel de Urcuqui - Imbabura, Ecuador\\
+    \today
+\end{center}
+
+\section*{Introduction}
+In this laboratory I worked on four exercises that combine basic but important ideas in programming: swapping variables without extra memory, sorting by comparison counting, sorting by distribution counting, and implementing a hash table with closed hashing. My goal was not only to make the programs compile, but also to understand why each algorithm works, when it is useful, and how to test it in a simple way.
+
+To solve the laboratory, I followed almost the same structure in all four exercises:
+
+\begin{itemize}
+\item first, I understood exactly what the instruction was asking for;
+\item then, I reviewed the main theoretical idea of the algorithm or method;
+\item after that, I translated that idea into C++;
+\item finally, I tested the program with small examples to verify the output.
+\end{itemize}
+
+This process helped me avoid coding by memory only. Instead, I built each solution with a clearer logic and a step-by-step approach.
+
+\section*{Exercise 1: Swapping Two Variables Without Extra Storage}
+\textbf{What the exercise is about.} The first exercise asks whether it is possible to exchange the values of two numeric variables, \(u\) and \(v\), without using an additional temporary variable. The main idea is to reuse the same two variables during the whole process.
+
+\textbf{Simple context and step-by-step idea.} Yes, it is possible to swap the values of two numeric variables without using a third auxiliary variable. The easiest way to explain it here is with a small example.
+
+If:
+\[
+u = 5,\qquad v = 8
+\]
+
+Then:
+\begin{itemize}
+\item first, \(u = u + v\), so now \(u = 13\);
+\item second, \(v = u - v\), so now \(v = 5\);
+\item third, \(u = u - v\), so now \(u = 8\).
+\end{itemize}
+
+At the end:
+\[
+u = 8,\qquad v = 5
+\]
+
+So the values are swapped correctly. What makes this work is that the sum temporarily stores enough information to recover both original values step by step.
+
+\textbf{How I researched it.} First, I thought about the usual swap with a temporary variable, but the instruction did not allow that. So I looked at the most common alternatives. For this case, the clearest option was the arithmetic method using addition and subtraction, because it is easy to understand and easy to show in a short program.
+
+\textbf{How I solved it.} In \texttt{1.cpp}, I asked the user for two integer values, displayed the values before the swap, and then applied three arithmetic operations. The flow is simple: first I add both values into one variable, then I recover the original value of the second variable, and finally I recover the original value of the first variable.
+
+\textbf{Key code fragment.}
+\begin{lstlisting}
+u = u + v;
+v = u - v;
+u = u - v;
+\end{lstlisting}
+
+\textbf{Result.} When I tested the program with \(u = 12\) and \(v = 7\), the output showed \(u = 7\) and \(v = 12\). That means the swap worked correctly. Because of that, I conclude that \texttt{1.cpp} satisfies the first requirement. A small note is that this method can overflow with very large integers, but for the values used in this lab it works correctly.
+
+\section*{Exercise 2: Comparison Counting Sort}
+\textbf{What the exercise is about.} In this part, the task is to implement the \textit{ComparisonCountingSort} algorithm. This algorithm sorts an array by counting how many elements must appear before each value in the final sorted order. To do that, it compares each element with the others.
+
+\textbf{Simple context and step-by-step idea.} Before coding it, I tried to understand it with a very small array:
+\[
+[40,\ 10,\ 30]
+\]
+
+The idea is not to swap values little by little. Instead, the algorithm counts how many elements must go before each value.
+
+Step by step:
+\begin{itemize}
+\item compare \(40\) and \(10\): since \(40\) is larger, the counter of \(40\) increases;
+\item compare \(40\) and \(30\): since \(40\) is larger again, the counter of \(40\) increases one more time;
+\item compare \(10\) and \(30\): since \(30\) is larger, the counter of \(30\) increases.
+\end{itemize}
+
+After these comparisons, the counters are:
+\[
+[2,\ 0,\ 1]
+\]
+
+This means:
+\begin{itemize}
+\item \(10\) goes to position \(0\),
+\item \(30\) goes to position \(1\),
+\item \(40\) goes to position \(2\).
+\end{itemize}
+
+So the final sorted array is:
+\[
+[10,\ 30,\ 40]
+\]
+
+That is why this algorithm works: it finds the final position of each element by counting, not by repeatedly swapping elements.
+
+\textbf{How I researched it.} Before coding, I focused on understanding the core idea: if I know how many elements are smaller or larger than a given value, I can determine its final position in the sorted array. That was the most important part to understand, because this algorithm does not sort by swapping neighboring positions like other methods. Instead, it computes the final location of each element directly.
+
+\textbf{How I solved it.} In \texttt{2.cpp}, I used two auxiliary arrays: one to store the counters and another to build the sorted output. Then I compared every pair of elements using nested loops. If one value is smaller than another, the counter of the corresponding element is increased. After all comparisons are finished, each value is placed in the position indicated by its counter.
+
+\textbf{Key code fragment.}
+\begin{lstlisting}
+for (int i = 0; i < n - 1; i++) {
+    for (int j = i + 1; j < n; j++) {
+        if (A[i] < A[j]) count[j]++;
+        else count[i]++;
+    }
+}
+\end{lstlisting}
+
+\textbf{Result.} The test with the array \texttt{\{62, 31, 84, 96, 19, 47\}} produced the sorted output \texttt{19 31 47 62 84 96}. This shows that the implementation works correctly. In terms of time complexity, this method requires \(O(n^2)\) because it compares many pairs of elements. Its extra memory usage is \(O(n)\).
+
+\section*{Exercise 3: Distribution Counting Sort}
+\textbf{What the exercise is about.} This exercise asks for an implementation of \textit{DistributionCountingSort} and a comparison with the previous algorithm. Unlike \textit{ComparisonCountingSort}, the main idea here is not to compare every pair of elements, but to count how many times each value appears inside a range.
+
+\textbf{Simple context and step-by-step idea.} I understood this algorithm better with a small example:
+\[
+[4,\ 2,\ 2,\ 5,\ 3]
+\]
+
+Here, the minimum value is \(2\) and the maximum value is \(5\). So I only need to count the values in the range \(2\) to \(5\).
+
+Step by step:
+\begin{itemize}
+\item value \(2\) appears \(2\) times;
+\item value \(3\) appears \(1\) time;
+\item value \(4\) appears \(1\) time;
+\item value \(5\) appears \(1\) time.
+\end{itemize}
+
+So the frequency array is:
+\[
+[2,\ 1,\ 1,\ 1]
+\]
+
+Then I build cumulative counts:
+\[
+[2,\ 3,\ 4,\ 5]
+\]
+
+These cumulative values tell me the final positions of the elements in the sorted output. After rebuilding the array, the result is:
+\[
+[2,\ 2,\ 3,\ 4,\ 5]
+\]
+
+So this algorithm works by using how the values are distributed, instead of comparing every pair of elements.
+
+\textbf{How I researched it.} First, I identified that this algorithm works best when the input consists of integers and when the range between the minimum and maximum values is not too large. Then I reviewed its main steps: find the minimum and maximum values, create a counting array, accumulate the frequencies, and rebuild the sorted output by using prefix sums.
+
+\textbf{How I solved it.} In \texttt{3.cpp}, I started by finding the value range so I could determine the size of the \texttt{count} array. Then I counted the occurrences of each value, computed the cumulative counts, and built the final sorted array from right to left to keep the algorithm stable.
+
+\textbf{Key code fragment.}
+\begin{lstlisting}
+for (int i = 0; i < n; i++) {
+    count[A[i] - minVal]++;
+}
+
+for (int i = 1; i < range; i++) {
+    count[i] += count[i - 1];
+}
+\end{lstlisting}
+
+\textbf{Result.} The test with \texttt{\{62, 31, 84, 96, 19, 47, 31, 19, 84\}} produced \texttt{19 19 31 31 47 62 84 84 96}, so the implementation is also correct.
+
+\textbf{Comparison with Exercise 2.} From my point of view, the most important difference is that \textit{ComparisonCountingSort} depends on comparisons between elements, while \textit{DistributionCountingSort} takes advantage of the distribution of the values. Because of that:
+
+\begin{itemize}
+\item \textit{ComparisonCountingSort} has complexity \(O(n^2)\);
+\item \textit{DistributionCountingSort} has complexity \(O(n + k)\), where \(k\) is the value range;
+\item the algorithm from Exercise 2 is easier to imagine at first;
+\item the algorithm from Exercise 3 needs a little more structure, but it can be much more efficient when the input range is small.
+\end{itemize}
+
+In other words, Exercise 2 helped me understand a sorting method based on comparisons, while Exercise 3 showed me a more efficient strategy when the nature of the data makes it possible.
+
+\section*{Exercise 4: Hashing with Closed Hashing Collision Resolution}
+\textbf{What the exercise is about.} The instruction asks for a hash table implementation in C++ without using dictionaries or ready-made hashing libraries, and it specifically requires closed hashing as the collision resolution method. This means that all elements must remain inside the same array, and if a position is already occupied, another position inside the table must be searched.
+
+\textbf{Simple context and step-by-step idea.} I understood this exercise by thinking of the hash table as a fixed array of positions. Suppose the table size is \(10\), and I want to insert the keys:
+\[
+23,\ 43,\ 13
+\]
+
+Using the hash function \(\text{key} \bmod 10\):
+\begin{itemize}
+\item \(23 \bmod 10 = 3\), so \(23\) goes to index \(3\);
+\item \(43 \bmod 10 = 3\), but index \(3\) is already occupied, so I move to the next free position, index \(4\);
+\item \(13 \bmod 10 = 3\), but index \(3\) is occupied and index \(4\) is also occupied, so I continue to index \(5\).
+\end{itemize}
+
+The table then looks like this in the occupied part:
+\[
+[3:23,\ 4:43,\ 5:13]
+\]
+
+This is the main idea of closed hashing with linear probing: every time a collision happens, I keep moving one position at a time until I find a free slot. Search and deletion follow that same path, which is why the table can still find elements correctly after collisions.
+
+\textbf{How I researched it.} First, I distinguished between open hashing and closed hashing. Then I focused on a simple closed hashing strategy: \textit{linear probing}. This method seemed appropriate for the lab because it is clear, short to implement, and makes it easy to see how collisions are resolved.
+
+\textbf{How I solved it.} In \texttt{4.cpp}, I defined a class called \texttt{HashTable} with a fixed array of nodes. Each node stores a key and a status: empty, occupied, or deleted. To insert a value, I first apply the hash function \texttt{key \% SIZE}. If that position is already occupied, I move to the next position using modular arithmetic until I find an available slot.
+
+\textbf{Key code fragment.}
+\begin{lstlisting}
+while (table[index].status == 1) {
+    if (table[index].key == key) {
+        return;
+    }
+    index = (index + 1) % SIZE;
+}
+\end{lstlisting}
+
+\textbf{Result.} The keys \texttt{23}, \texttt{43}, \texttt{13}, and \texttt{33} generate collisions because several of them start at the same position. The program successfully inserts them, searches for them, and deletes one of them correctly. This demonstrates that the hash table with linear probing works. On average, insertion, search, and deletion are close to \(O(1)\), although in the worst case they can reach \(O(n)\) if too many collisions occur.
+
+\section*{General Verification}
+After reviewing and executing the four programs, I conclude that they do satisfy the lab requirements:
+
+\begin{itemize}
+\item \texttt{1.cpp} solves the swap without extra memory;
+\item \texttt{2.cpp} implements and tests \textit{ComparisonCountingSort};
+\item \texttt{3.cpp} implements and tests \textit{DistributionCountingSort}, and it also supports the theoretical comparison with the previous exercise;
+\item \texttt{4.cpp} implements closed hashing with \textit{linear probing} without using dictionaries or external hashing libraries.
+\end{itemize}
+
+\section*{Conclusions}
+This lab helped me see that not all problems are solved with the same idea. In the first exercise, a simple arithmetic manipulation was enough. In Exercises 2 and 3, I learned two different ways to sort data, one based on comparisons and another based on value distribution. In the fourth exercise, I worked with efficient searching through a hash table. The most useful part for me was following an ordered structure to solve each task: understand the theory, translate it into code, test with small examples, and finally verify that the output really matches what the instruction asks for.
+
+\end{document}
