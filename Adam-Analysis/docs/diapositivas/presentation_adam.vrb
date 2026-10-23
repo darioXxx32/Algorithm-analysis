@@ -1,0 +1,19 @@
+\frametitle{C++17 implementation of Adam \timing {1:10}}
+\begin{columns}[T,onlytextwidth]\begin{column}{.58\textwidth}\begin{beamercolorbox}[rounded=true,sep=.4em,wd=\linewidth]{block body}\begin{lstlisting}
+if (t == 0) { m.assign(d, 0.0); v.assign(d, 0.0); }
+++t;
+const double bc1 = 1.0 - std::pow(beta1, t);
+const double bc2 = 1.0 - std::pow(beta2, t);
+for (size_t i = 0; i < d; ++i) {
+    m[i] = beta1*m[i] + (1-beta1)*grads[i];
+    v[i] = beta2*v[i] + (1-beta2)*grads[i]*grads[i];
+    const double mhat = m[i] / bc1;
+    const double vhat = v[i] / bc2;
+    const double update = learning_rate * mhat /
+        (std::sqrt(vhat) + epsilon);
+    params[i] -= update;
+}
+\end{lstlisting}
+\end{beamercolorbox}\end{column}
+\begin{column}{.39\textwidth}\begin{block}{Project design}\small \texttt{Optimizer::step} accepts parameter and gradient vectors.\\[.3em]Objective functions return $f(\theta)$ and fill a gradient vector.\\[.3em]\texttt{reset()} clears state between runs.\\[.3em]\textbf{Adam settings:} $\beta_1=.9$, $\beta_2=.999$, $\epsilon=10^{-8}$; $\alpha$ varies by objective.\end{block}\begin{beamercolorbox}[rounded=true,sep=.5em,wd=\linewidth]{block body}\textbf{Safety checks}\\[-.1em]\scriptsize Finite positive learning rate; valid $\beta$ and $\epsilon$; matching dimensions; finite inputs and updates. Invalid cases throw exceptions.\end{beamercolorbox}\vspace{.25em}\scriptsize Tests check known gradients, first updates, reset, invalid hyperparameters, dimension changes and non-finite gradients.\end{column}\end{columns}
+\note{The vectors store moments; scalar bias factors are computed once, then each coordinate updates in place. The implementation is directly in C++, not a PyTorch wrapper.}
