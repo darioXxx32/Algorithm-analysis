@@ -1,0 +1,20 @@
+﻿=== Swap Without Extra Storage ===
+
+Method 1 (XOR swap):
+  Before: u = 42, v = 99
+  After : u = 99, v = 42
+
+Method 2 (Arithmetic add/sub swap):
+  Before: u = 1000, v = -250
+  After : u = -250, v = 1000
+
+Inline XOR swap (no function):
+  Before: u = 7, v = 3
+  After : u = 3, v = 7
+
+Explanation:
+  XOR swap relies on the property: a ^ a = 0, a ^ 0 = a
+  Step 1: u = u ^ v
+  Step 2: v = u ^ v = (u^v)^v = u
+  Step 3: u = u ^ v = (u^v)^u = v
+  No temporary variable is needed at any step.

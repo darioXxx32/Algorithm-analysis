@@ -1,0 +1,109 @@
+﻿=== Hash Table: Closed Hashing with Linear Probing ===
+Table size: 17 (prime)
+
+--- Inserting entries ---
+[insert] Inserted key="alice" value=85 at slot 4 (probes=1)
+[insert] Inserted key="bob" value=92 at slot 9 (probes=1)
+[insert] Inserted key="charlie" value=78 at slot 10 (probes=2)
+[insert] Inserted key="diana" value=95 at slot 15 (probes=1)
+[insert] Inserted key="eve" value=88 at slot 1 (probes=1)
+[insert] Inserted key="frank" value=70 at slot 12 (probes=1)
+[insert] Inserted key="grace" value=91 at slot 2 (probes=2)
+[insert] Inserted key="henry" value=66 at slot 16 (probes=2)
+[insert] Inserted key="iris" value=83 at slot 13 (probes=1)
+[insert] Inserted key="jack" value=77 at slot 14 (probes=2)
+
+ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+Γöé Slot Γöé Key                Γöé  Value   Γöé  State   Γöé
+Γö£ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöñ
+Γöé 0   Γöé                     Γöé          Γöé EMPTY    Γöé
+Γöé 1   Γöé eve                 Γöé 88       Γöé OCCUPIED Γöé
+Γöé 2   Γöé grace               Γöé 91       Γöé OCCUPIED Γöé
+Γöé 3   Γöé                     Γöé          Γöé EMPTY    Γöé
+Γöé 4   Γöé alice               Γöé 85       Γöé OCCUPIED Γöé
+Γöé 5   Γöé                     Γöé          Γöé EMPTY    Γöé
+Γöé 6   Γöé                     Γöé          Γöé EMPTY    Γöé
+Γöé 7   Γöé                     Γöé          Γöé EMPTY    Γöé
+Γöé 8   Γöé                     Γöé          Γöé EMPTY    Γöé
+Γöé 9   Γöé bob                 Γöé 92       Γöé OCCUPIED Γöé
+Γöé 10  Γöé charlie             Γöé 78       Γöé OCCUPIED Γöé
+Γöé 11  Γöé                     Γöé          Γöé EMPTY    Γöé
+Γöé 12  Γöé frank               Γöé 70       Γöé OCCUPIED Γöé
+Γöé 13  Γöé iris                Γöé 83       Γöé OCCUPIED Γöé
+Γöé 14  Γöé jack                Γöé 77       Γöé OCCUPIED Γöé
+Γöé 15  Γöé diana               Γöé 95       Γöé OCCUPIED Γöé
+Γöé 16  Γöé henry               Γöé 66       Γöé OCCUPIED Γöé
+ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
+Occupied slots: 10 / 17
+
+--- Searching ---
+Found  "diana" -> 95
+Found  "bob" -> 92
+"zara" NOT found
+
+--- Updating "bob" -> 100 ---
+[insert] Updated  key="bob" value=100 at slot 9
+
+--- Removing "charlie" and "eve" ---
+[remove] Removed  key="charlie" from slot 10
+[remove] Removed  key="eve" from slot 1
+
+
+ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+Γöé Slot Γöé Key                Γöé  Value   Γöé  State   Γöé
+Γö£ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöñ
+Γöé 0   Γöé                     Γöé          Γöé EMPTY    Γöé
+Γöé 1   Γöé                     Γöé          Γöé DELETED  Γöé
+Γöé 2   Γöé grace               Γöé 91       Γöé OCCUPIED Γöé
+Γöé 3   Γöé                     Γöé          Γöé EMPTY    Γöé
+Γöé 4   Γöé alice               Γöé 85       Γöé OCCUPIED Γöé
+Γöé 5   Γöé                     Γöé          Γöé EMPTY    Γöé
+Γöé 6   Γöé                     Γöé          Γöé EMPTY    Γöé
+Γöé 7   Γöé                     Γöé          Γöé EMPTY    Γöé
+Γöé 8   Γöé                     Γöé          Γöé EMPTY    Γöé
+Γöé 9   Γöé bob                 Γöé 100      Γöé OCCUPIED Γöé
+Γöé 10  Γöé                     Γöé          Γöé DELETED  Γöé
+Γöé 11  Γöé                     Γöé          Γöé EMPTY    Γöé
+Γöé 12  Γöé frank               Γöé 70       Γöé OCCUPIED Γöé
+Γöé 13  Γöé iris                Γöé 83       Γöé OCCUPIED Γöé
+Γöé 14  Γöé jack                Γöé 77       Γöé OCCUPIED Γöé
+Γöé 15  Γöé diana               Γöé 95       Γöé OCCUPIED Γöé
+Γöé 16  Γöé henry               Γöé 66       Γöé OCCUPIED Γöé
+ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
+Occupied slots: 8 / 17
+
+--- Re-inserting "charlie" with new value ---
+[insert] Inserted key="charlie" value=99 at slot 10 (probes=2)
+
+--- Collision stress test ---
+[insert] Inserted key="aaa" value=0 at slot 7 (probes=1)
+[insert] Inserted key="bbb" value=0 at slot 0 (probes=4)
+[insert] Inserted key="ccc" value=0 at slot 5 (probes=2)
+[insert] Inserted key="ddd" value=0 at slot 11 (probes=1)
+[insert] Inserted key="eee" value=0 at slot 1 (probes=1)
+[insert] Inserted key="fff" value=0 at slot 8 (probes=1)
+
+ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+Γöé Slot Γöé Key                Γöé  Value   Γöé  State   Γöé
+Γö£ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöñ
+Γöé 0   Γöé bbb                 Γöé 0        Γöé OCCUPIED Γöé
+Γöé 1   Γöé eee                 Γöé 0        Γöé OCCUPIED Γöé
+Γöé 2   Γöé grace               Γöé 91       Γöé OCCUPIED Γöé
+Γöé 3   Γöé                     Γöé          Γöé EMPTY    Γöé
+Γöé 4   Γöé alice               Γöé 85       Γöé OCCUPIED Γöé
+Γöé 5   Γöé ccc                 Γöé 0        Γöé OCCUPIED Γöé
+Γöé 6   Γöé                     Γöé          Γöé EMPTY    Γöé
+Γöé 7   Γöé aaa                 Γöé 0        Γöé OCCUPIED Γöé
+Γöé 8   Γöé fff                 Γöé 0        Γöé OCCUPIED Γöé
+Γöé 9   Γöé bob                 Γöé 100      Γöé OCCUPIED Γöé
+Γöé 10  Γöé charlie             Γöé 99       Γöé OCCUPIED Γöé
+Γöé 11  Γöé ddd                 Γöé 0        Γöé OCCUPIED Γöé
+Γöé 12  Γöé frank               Γöé 70       Γöé OCCUPIED Γöé
+Γöé 13  Γöé iris                Γöé 83       Γöé OCCUPIED Γöé
+Γöé 14  Γöé jack                Γöé 77       Γöé OCCUPIED Γöé
+Γöé 15  Γöé diana               Γöé 95       Γöé OCCUPIED Γöé
+Γöé 16  Γöé henry               Γöé 66       Γöé OCCUPIED Γöé
+ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
+Occupied slots: 15 / 17
+
+Load factor: 0.882353
